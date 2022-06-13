@@ -27,6 +27,7 @@
   "dependencies": {
     "@fastify/cors": "8.0.0",
     "graasp-item-tags": "github:graasp/graasp-item-tags",
+    "graasp-mailer": "github:graasp/graasp-mailer.git#21/publishNotification",
     "graasp-plugin-public": "github:graasp/graasp-plugin-public",
     "http-status-codes": "2.2.0",
     "qs": "6.10.5",
