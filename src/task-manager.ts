@@ -55,6 +55,7 @@ export class TaskManager {
   // todo: refactor this task depending on tag task sequence
   createPublishItemTaskSequence(member: Member, itemId: string): Task<Actor, any>[] {
     // get item from id and validate membership
+    console.log(itemId);
     const getItemTask = this.itemTaskManager.createGetTask(member, itemId);
     const validatePermissionTask =
       this.itemMembershipTaskManager.createGetMemberItemMembershipTask(member);

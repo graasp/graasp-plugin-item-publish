@@ -17,10 +17,6 @@ export interface GraaspPublishPluginOptions {
 }
 
 const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, options) => {
-  if (!publicPlugin) {
-    throw new Error('public plugin is not defined');
-  }
-
   const {
     items: { dbService: iS, taskManager: iTM },
     itemMemberships: { dbService: iMS, taskManager: iMTM },
@@ -32,6 +28,10 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
     mailer,
   } = fastify;
   const { publicTagId, publishedTagId } = options;
+  
+  if (!publicPlugin) {
+    throw new Error('public plugin is not defined');
+  }
 
   if (!mailerPlugin) {
     throw new Error('Mailer plugin is not defined');
@@ -69,18 +69,22 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
   fastify.get<{ Params: IdParam, Querystring: { notification: boolean } }>(
     '/:id/publish',
     { schema: publishItem },
-    async ({ member, params: { id: itemId }, query: { notification }, log }) => {
+    async ({ member, params: { id }, query: { notification }, log }) => {
       // todo: validate before publish ?
-
-      const tasks = pITM.createPublishItemTaskSequence(member, itemId);
+      console.log('TASK START', id);
+      const tasks = pITM.createPublishItemTaskSequence(member, id);
 
       const result = await runner.runSingleSequence(tasks, log);
+      console.log(result);
 
+      console.log(notification);
       // notify co-editors about publish of the item, only trigger when notification is TRUE
       if (notification) {
-        const item = await runner.runSingle(iTM.createGetTask(member, itemId));
-        const itemMemberships = await runner.runSingleSequence(iMTM.createGetOfItemTaskSequence(member, itemId)) as ItemMembership[];
+        const item = await runner.runSingle(iTM.createGetTask(member, id));
+        console.log(item);
+        const itemMemberships = await runner.runSingleSequence(iMTM.createGetOfItemTaskSequence(member, id)) as ItemMembership[];
         const coEditorIds = itemMemberships.filter(membership => membership.permission === 'write' || membership.permission == 'admin')?.map(membership => membership.memberId);
+        console.log(coEditorIds);
         coEditorIds.forEach(async coEditorId => {
           const coEditor = await runner.runSingle(mTM.createGetTask(member, coEditorId));
           sendNotificationEmail({item, member: coEditor, log});

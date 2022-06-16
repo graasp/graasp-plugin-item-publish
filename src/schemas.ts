@@ -37,7 +37,7 @@ export default {
         itemPath: { type: 'string' },
         // TODO: bug! should allow relative $ref: #/definitions/permission
         // check: https://github.com/fastify/fastify/issues/2328
-        permission: { $ref: 'http://graasp.org/public-items/#/definitions/permission' },
+        permission: { type: 'string' },
         creator: { $ref: 'http://graasp.org/#/definitions/uuid' },
         createdAt: { type: 'string' },
         updatedAt: { type: 'string' },
@@ -80,7 +80,7 @@ export default {
 
 export const publishItem = {
   params: { $ref: 'http://graasp.org/#/definitions/idParam' },
-  response: {
-    200: { $ref: 'http://graasp.org/public-items/#/definitions/item' },
-  },
+  // response: {
+  //   200: { $ref: 'http://graasp.org/published-items/#/definitions/item' },
+  // },
 };

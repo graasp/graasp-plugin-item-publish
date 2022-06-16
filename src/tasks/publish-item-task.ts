@@ -30,13 +30,16 @@ export class PublishItemTask extends BasePublishedItemTask<ItemTag | ItemNotPubl
   ) {
     super(actor, publishedItemService, publicItemService, itemTagService, itemService, tagIds);
     this.input = input;
+    console.log(input);
   }
 
   async run(handler: DatabaseTransactionHandler): Promise<void> {
     this.status = 'RUNNING';
 
     const { item } = this.input;
-    this.targetId = item.id;
+    this.targetId = item?.id;
+
+    console.log('IN PUBLISH ITEM TASK', item);
 
     // always check item is public
     const isPublic = await this.publicItemService.isPublic(item, handler);

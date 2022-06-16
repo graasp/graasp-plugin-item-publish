@@ -25,12 +25,12 @@
   },
   "homepage": "https://github.com/graasp/graasp-plugin-item-publish#readme",
   "dependencies": {
-    "@fastify/cors": "8.0.0",
+    "@fastify/cors": "7.0.0",
     "graasp-item-tags": "github:graasp/graasp-item-tags",
     "graasp-mailer": "github:graasp/graasp-mailer.git#21/publishNotification",
     "graasp-plugin-public": "github:graasp/graasp-plugin-public",
     "http-status-codes": "2.2.0",
-    "qs": "6.10.5",
+    "qs": "6.10.3",
     "slonik": "28.1.0"
   },
   "devDependencies": {
@@ -44,7 +44,8 @@
     "@typescript-eslint/parser": "5.27.1",
     "eslint": "8.17.0",
     "eslint-config-prettier": "8.5.0",
-    "fastify": "^4.0.0",
+    "fastify": "^3.25.3",
+    "fastify-plugin": "3.0.1",
     "husky": "8.0.1",
     "jest": "28.1.1",
     "prettier": "2.6.2",
