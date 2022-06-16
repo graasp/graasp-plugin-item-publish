@@ -66,26 +66,26 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
     { schema: publishItem },
     async ({ member, params: { id }, query: { notification }, log }) => {
       // todo: validate before publish ?
-      console.log('TASK START', id);
-      const tasks = pITM.createPublishItemTaskSequence(member, id);
 
+      const item = await runner.runSingle(iTM.createGetTask(member, id));
+
+      // validate permission and add publish item-tag
+      const tasks = pITM.createPublishItemTaskSequence(member, item);
       const result = await runner.runSingleSequence(tasks, log);
-      console.log(result);
 
-      console.log(notification);
       // notify co-editors about publish of the item, only trigger when notification is TRUE
       if (notification) {
-        const item = await runner.runSingle(iTM.createGetTask(member, id));
-        console.log(item);
+        // get item memberships
         const itemMemberships = (await runner.runSingleSequence(
           iMTM.createGetOfItemTaskSequence(member, id),
         )) as ItemMembership[];
+        // get co-editors
         const coEditorIds = itemMemberships
           .filter(
             (membership) => membership.permission === 'write' || membership.permission == 'admin',
           )
           ?.map((membership) => membership.memberId);
-        console.log(coEditorIds);
+        // send email notification to all co-editors
         coEditorIds.forEach(async (coEditorId) => {
           const coEditor = await runner.runSingle(mTM.createGetTask(member, coEditorId));
           sendNotificationEmail({ item, member: coEditor, log });

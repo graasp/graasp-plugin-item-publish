@@ -53,14 +53,12 @@ export class TaskManager {
   }
 
   // todo: refactor this task depending on tag task sequence
-  createPublishItemTaskSequence(member: Member, itemId: string): Task<Actor, any>[] {
+  createPublishItemTaskSequence(member: Member, item: Item): Task<Actor, any>[] {
     // get item from id and validate membership
-    console.log(itemId);
-    const getItemTask = this.itemTaskManager.createGetTask(member, itemId);
     const validatePermissionTask =
       this.itemMembershipTaskManager.createGetMemberItemMembershipTask(member);
     validatePermissionTask.getInput = () => ({
-      item: getItemTask.getResult(),
+      item,
       validatePermission: 'admin',
     });
 
@@ -72,9 +70,9 @@ export class TaskManager {
       this.itemTagService,
       this.itemService,
       this.tagIds,
+      { item },
     );
-    publishTask.getInput = () => ({ item: getItemTask.getResult() as Item });
 
-    return [getItemTask, validatePermissionTask, publishTask];
+    return [validatePermissionTask, publishTask];
   }
 }
