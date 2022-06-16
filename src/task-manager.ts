@@ -64,7 +64,7 @@ export class TaskManager {
       validatePermission: 'admin',
     });
 
-    // publish item 
+    // publish item
     const publishTask = new PublishItemTask(
       member,
       this.publishedItemService,

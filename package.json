@@ -46,6 +46,7 @@
     "eslint-config-prettier": "8.5.0",
     "fastify": "^3.25.3",
     "fastify-plugin": "3.0.1",
+    "graasp-test": "github:graasp/graasp-test",
     "husky": "8.0.1",
     "jest": "28.1.1",
     "prettier": "2.6.2",
