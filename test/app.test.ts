@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { v4 } from 'uuid';
 
 import build from './app';
-import { MEMBERS, MOCK_ITEM } from './constants';
+import { MEMBERS, MEMBERSHIPS, MOCK_ITEM } from './constants';
 
 const itemTaskManager = new ItemTaskManager();
 const memberTaskManager = {} as unknown as MemberTaskManager;
@@ -25,6 +25,20 @@ describe('Publish Plugin', () => {
     });
 
     describe('GET /publish', () => {
+      const item = MOCK_ITEM;
+      const mockGetTask = jest.fn().mockReturnValue(new MockTask(item));
+      itemTaskManager.createGetTask = mockGetTask;
+      const mockGetMemberIMTask = jest.fn().mockReturnValue(new MockTask(item));
+      itemMembershipTaskManager.createGetMemberItemMembershipTask = mockGetMemberIMTask;
+      const mockGetItemMembershipTask = jest.fn().mockReturnValue([new MockTask(MEMBERSHIPS)]);
+      itemMembershipTaskManager.createGetOfItemTaskSequence = mockGetItemMembershipTask;
+      const mockGetManyTask = jest.fn().mockReturnValue(new MockTask([MEMBERS.ANNA, MEMBERS.BOB]));
+      memberTaskManager.createGetManyTask = mockGetManyTask;
+      jest
+        .spyOn(runner, 'runSingleSequence')
+        .mockImplementation(async (task) => task[0].result);
+      jest.spyOn(runner, 'runSingle').mockImplementation(async (task) => task.result);
+
       it('Successfully publish item with notification', async () => {
         const app = await build({
           itemTaskManager,
@@ -33,20 +47,6 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-
-        const item = MOCK_ITEM;
-        const mockGetTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemTaskManager.createGetTask = mockGetTask;
-        const mockGetMemberIMTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemMembershipTaskManager.createGetMemberItemMembershipTask = mockGetMemberIMTask;
-        const mockGetItemMembershipTask = jest.fn().mockReturnValue([new MockTask(item.memberships)]);
-        itemMembershipTaskManager.createGetOfItemTaskSequence = mockGetItemMembershipTask;
-        const mockGetManyTask = jest.fn().mockReturnValue(new MockTask([MEMBERS.ANNA, MEMBERS.BOB]));
-        memberTaskManager.createGetManyTask = mockGetManyTask;
-        jest
-          .spyOn(runner, 'runSingleSequence')
-          .mockImplementation(async (task) => task[0].result);
-        jest.spyOn(runner, 'runSingle').mockImplementation(async (task) => task.result);
   
         const res = await app.inject({
           method: 'GET',
@@ -67,20 +67,6 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-
-        const item = MOCK_ITEM;
-        const mockGetTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemTaskManager.createGetTask = mockGetTask;
-        const mockGetMemberIMTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemMembershipTaskManager.createGetMemberItemMembershipTask = mockGetMemberIMTask;
-        const mockGetItemMembershipTask = jest.fn().mockReturnValue([new MockTask(item.memberships)]);
-        itemMembershipTaskManager.createGetOfItemTaskSequence = mockGetItemMembershipTask;
-        const mockGetManyTask = jest.fn().mockReturnValue(new MockTask([MEMBERS.ANNA, MEMBERS.BOB]));
-        memberTaskManager.createGetManyTask = mockGetManyTask;
-        jest
-          .spyOn(runner, 'runSingleSequence')
-          .mockImplementation(async (task) => task[0].result);
-        jest.spyOn(runner, 'runSingle').mockImplementation(async (task) => task.result);
   
         const res = await app.inject({
           method: 'GET',
@@ -102,20 +88,6 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-
-        const item = MOCK_ITEM;
-        const mockGetTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemTaskManager.createGetTask = mockGetTask;
-        const mockGetMemberIMTask = jest.fn().mockReturnValue(new MockTask(item));
-        itemMembershipTaskManager.createGetMemberItemMembershipTask = mockGetMemberIMTask;
-        const mockGetItemMembershipTask = jest.fn().mockReturnValue([new MockTask(item.memberships)]);
-        itemMembershipTaskManager.createGetOfItemTaskSequence = mockGetItemMembershipTask;
-        const mockGetManyTask = jest.fn().mockReturnValue(new MockTask([MEMBERS.ANNA, MEMBERS.BOB]));
-        memberTaskManager.createGetManyTask = mockGetManyTask;
-        jest
-          .spyOn(runner, 'runSingleSequence')
-          .mockImplementation(async (task) => task[0].result);
-        jest.spyOn(runner, 'runSingle').mockImplementation(async (task) => task.result);
   
         const res = await app.inject({
           method: 'GET',

@@ -36,23 +36,17 @@ export const MOCK_ITEM = {
   extra: {
     image: 'someimageurl',
   },
-  tags: [
-    {
-      id: 'ecbfbd2a-5688-11eb-ae93-0242ac130002',
-      tagId: ITEM_PUBLIC_TAG.id,
-      itemPath: 'ecafbd2a_5688_11eb_ae93_0242ac130002',
-    },
-  ],
-  memberships: [
-    {
-      itemPath: 'fdf09f5a_5688_11eb_ae93_0242ac130002',
-      permission: PermissionLevel.Admin,
-      memberId: MEMBERS.ANNA.id,
-    },
-    {
-      itemPath: 'fdf09f5a_5688_11eb_ae93_0242ac130002',
-      permission: PermissionLevel.Write,
-      memberId: MEMBERS.BOB.id,
-    },
-  ],
 };
+
+export const MEMBERSHIPS = [
+  {
+    itemPath: 'fdf09f5a_5688_11eb_ae93_0242ac130002',
+    permission: PermissionLevel.Admin,
+    memberId: MEMBERS.ANNA.id,
+  },
+  {
+    itemPath: 'fdf09f5a_5688_11eb_ae93_0242ac130002',
+    permission: PermissionLevel.Write,
+    memberId: MEMBERS.BOB.id,
+  },
+];
