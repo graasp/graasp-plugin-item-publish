@@ -8,6 +8,7 @@ import {
   TaskRunner,
 } from 'graasp';
 import { ItemTaskManager } from 'graasp-test';
+import { } from 'graasp-mailer';
 
 import plugin, { GraaspPublishPluginOptions } from '../src/service-api';
 import { GRAASP_ACTOR } from './constants';
@@ -63,6 +64,7 @@ const build = async ({
   app.decorate('itemMemberships', {
     taskManager: itemMembershipTaskManager,
   });
+  app.decorate('mailer', { sendPublishNotificationEmail: async () => Error('mock error') });
 
   await app.register(plugin, options);
 
