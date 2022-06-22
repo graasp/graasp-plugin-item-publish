@@ -7,7 +7,7 @@ import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
 import { PermissionLevel } from './constants';
 
 import { PublishedItemService } from './db-service';
-import { publishItem } from './schemas';
+import schemas, { publishItem } from './schemas';
 import { TaskManager as PublishedItemTaskManager } from './task-manager';
 import { buildItemLink } from './utils';
 
@@ -62,6 +62,8 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
       log.warn(err, `mailer failed. item published: ${item.name}, ${item.id}`);
     });
   };
+
+  fastify.addSchema(schemas);
 
   fastify.get<{ Params: IdParam; Querystring: { notification: boolean } }>(
     '/:id/publish',

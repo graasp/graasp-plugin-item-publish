@@ -82,7 +82,7 @@ export const publishItem = {
   queryString: { 
     notification: { type: 'boolean'}
   },
-  // response: {
-  //   200: { $ref: 'http://graasp.org/published-items/#/definitions/item' },
-  // },
+  response: {
+    200: { $ref: 'http://graasp.org/published-items/#/definitions/item' },
+  },
 };
