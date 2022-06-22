@@ -9,6 +9,7 @@ import {
 } from 'graasp';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
+import { PermissionLevel } from './constants';
 
 import { PublishedItemService } from './db-service';
 import { PublishItemTask } from './tasks/publish-item-task';
@@ -59,7 +60,7 @@ export class TaskManager {
       this.itemMembershipTaskManager.createGetMemberItemMembershipTask(member);
     validatePermissionTask.getInput = () => ({
       item,
-      validatePermission: 'admin',
+      validatePermission: PermissionLevel.Admin,
     });
 
     // publish item

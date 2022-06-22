@@ -33,8 +33,7 @@ export default {
          * since 'itemMembership' schema is only used for serialization it's safe
          * to just use `{ type: 'string' }`
          */
-        // itemPath: { $ref: 'http://graasp.org/#/definitions/itemPath' },
-        itemPath: { type: 'string' },
+        itemPath: { $ref: 'http://graasp.org/#/definitions/itemPath' },
         // TODO: bug! should allow relative $ref: #/definitions/permission
         // check: https://github.com/fastify/fastify/issues/2328
         permission: { type: 'string' },
@@ -80,6 +79,9 @@ export default {
 
 export const publishItem = {
   params: { $ref: 'http://graasp.org/#/definitions/idParam' },
+  queryString: { 
+    notification: { type: 'boolean'}
+  },
   // response: {
   //   200: { $ref: 'http://graasp.org/published-items/#/definitions/item' },
   // },

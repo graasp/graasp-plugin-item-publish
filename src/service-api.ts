@@ -4,6 +4,7 @@ import { Actor, IdParam, ItemMembership } from 'graasp';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import mailerPlugin from 'graasp-mailer';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
+import { PermissionLevel } from './constants';
 
 import { PublishedItemService } from './db-service';
 import { publishItem } from './schemas';
@@ -14,6 +15,7 @@ export interface GraaspPublishPluginOptions {
   publishedTagId: string;
   publicTagId: string;
   graaspActor: Actor;
+  explorerHostApi: string;
 }
 
 const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, options) => {
@@ -29,7 +31,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
     // cannot use public decoration because it is not defined in private endpoints
     mailer,
   } = fastify;
-  const { publicTagId, publishedTagId } = options;
+  const { publicTagId, publishedTagId, explorerHostApi } = options;
 
   const itemTagService = new ItemTagService();
   const publicIS = new PublicItemService(publicTagId);
@@ -54,7 +56,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
 
   const sendNotificationEmail = ({ item, member, log }) => {
     const lang = member?.extra?.lang as string;
-    const itemLink = buildItemLink(item);
+    const itemLink = buildItemLink(item, explorerHostApi);
 
     mailer.sendPublishNotificationEmail(member, itemLink, item.name, lang).catch((err) => {
       log.warn(err, `mailer failed. item published: ${item.name}, ${item.id}`);
@@ -71,7 +73,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
 
       // validate permission and add publish item-tag
       const tasks = pITM.createPublishItemTaskSequence(member, item);
-      const result = await runner.runSingleSequence(tasks, log);
+      const publishedItem = await runner.runSingleSequence(tasks, log);
 
       // notify co-editors about publish of the item, only trigger when notification is TRUE
       if (notification) {
@@ -82,19 +84,18 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
         // get co-editors
         const coEditorIds = itemMemberships
           .filter(
-            (membership) => membership.permission === 'write' || membership.permission == 'admin',
-          )
-          ?.map((membership) => membership.memberId);
+            (membership) => membership.permission === PermissionLevel.Admin || membership.permission == PermissionLevel.Write,
+          ).map((membership) => membership.memberId);
         // send email notification to all co-editors
-        coEditorIds.forEach(async (coEditorId) => {
-          const coEditor = await runner.runSingle(mTM.createGetTask(member, coEditorId));
+        const coEditors = await runner.runSingle(mTM.createGetManyTask(member, coEditorIds));
+        coEditors.forEach(async (coEditor) => {
           sendNotificationEmail({ item, member: coEditor, log });
         });
       }
 
       // return published item
       // todo: return copied item?
-      return result;
+      return publishedItem;
     },
   );
 };

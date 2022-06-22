@@ -14,7 +14,7 @@
     "prepack": "yarn build",
     "prettier:check": "prettier --check \"{src,test}/**/*.ts\"",
     "prettier:write": "prettier --write \"{src,test}/**/*.ts\"",
-    "test": "jest  --forceExit --coverage --verbose",
+    "test": "jest",
     "test:watch": "yarn test --watchAll",
     "lint": "eslint ."
   },
