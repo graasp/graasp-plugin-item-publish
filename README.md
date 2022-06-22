@@ -1,1 +1,1 @@
-# graasp-template-backend
+# graasp-plugin-item-publish
