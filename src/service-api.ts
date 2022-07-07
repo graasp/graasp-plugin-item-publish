@@ -15,7 +15,7 @@ export interface GraaspPublishPluginOptions {
   publishedTagId: string;
   publicTagId: string;
   graaspActor: Actor;
-  explorerHostApi: string;
+  hostname: string;
 }
 
 const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, options) => {
@@ -31,7 +31,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
     // cannot use public decoration because it is not defined in private endpoints
     mailer,
   } = fastify;
-  const { publicTagId, publishedTagId, explorerHostApi } = options;
+  const { publicTagId, publishedTagId, hostname } = options;
 
   const itemTagService = new ItemTagService();
   const publicIS = new PublicItemService(publicTagId);
@@ -56,7 +56,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
 
   const sendNotificationEmail = ({ item, member, log }) => {
     const lang = member?.extra?.lang as string;
-    const itemLink = buildItemLink(item, explorerHostApi);
+    const itemLink = buildItemLink(item, hostname);
 
     mailer.sendPublishNotificationEmail(member, itemLink, item.name, lang).catch((err) => {
       log.warn(err, `mailer failed. item published: ${item.name}, ${item.id}`);

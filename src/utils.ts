@@ -1,1 +1,1 @@
-export const buildItemLink = (item, hostApi) => `https://${hostApi}/${item?.id}`;
+export const buildItemLink = (item, hostname) => `https://${hostname}/${item?.id}`;
