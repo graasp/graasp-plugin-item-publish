@@ -3461,7 +3461,7 @@ __metadata:
 
 "graasp-mailer@github:graasp/graasp-mailer.git#21/publishNotification":
   version: 0.1.0
-  resolution: "graasp-mailer@https://github.com/graasp/graasp-mailer.git#commit=53c5de01625d90b24f08482d8fcadbd2ca97d1af"
+  resolution: "graasp-mailer@https://github.com/graasp/graasp-mailer.git#commit=64e26e1834e876642bebb9ec04b67115864ca4a2"
   dependencies:
     cpy-cli: 4.1.0
     eta: ^1.12.3
@@ -3470,7 +3470,7 @@ __metadata:
     fastify-polyglot: 1.0.0
     i18n: 0.14.2
     point-of-view: ^5.2.0
-  checksum: ac7b096dcecba2e3ca90ca7cc2be569be76a22f6478551ba94e0a939d3b102d93727347a38d3bd9405f8bc7f6e5d1019854b9afcc8e8743d9ad2b01c0c80b599
+  checksum: 027bf79c2d12896fbfe561ffe524cfd26e09c82f4855d49377636e0c56906cb0440eabf96812befa3d17ed90a290044d0ad43a1144a334b544e3741866014c47
   languageName: node
   linkType: hard
 
