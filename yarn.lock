@@ -3459,9 +3459,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graasp-mailer@github:graasp/graasp-mailer.git#23/publishLink":
+"graasp-mailer@github:graasp/graasp-mailer.git":
   version: 0.1.0
-  resolution: "graasp-mailer@https://github.com/graasp/graasp-mailer.git#commit=93780ba32373d53955a3442b99a8ec8a29380c98"
+  resolution: "graasp-mailer@https://github.com/graasp/graasp-mailer.git#commit=928ebb47da4010231e33296224f3178072fc875a"
   dependencies:
     cpy-cli: 4.1.0
     eta: ^1.12.3
@@ -3492,7 +3492,7 @@ __metadata:
     fastify: ^3.25.3
     fastify-plugin: 3.0.1
     graasp-item-tags: "github:graasp/graasp-item-tags"
-    graasp-mailer: "github:graasp/graasp-mailer.git#23/publishLink"
+    graasp-mailer: "github:graasp/graasp-mailer.git"
     graasp-plugin-public: "github:graasp/graasp-plugin-public"
     graasp-test: "github:graasp/graasp-test"
     http-status-codes: 2.2.0
