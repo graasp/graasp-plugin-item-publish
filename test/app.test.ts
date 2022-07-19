@@ -1,8 +1,13 @@
-import { ItemService, MemberTaskManager } from 'graasp';
-import { ItemMembershipTaskManager, ItemTaskManager, TaskRunner } from 'graasp-test';
-import MockTask from 'graasp-test/src/tasks/task';
 import { StatusCodes } from 'http-status-codes';
 import { v4 } from 'uuid';
+
+import { ItemService, MemberTaskManager } from '@graasp/sdk';
+import {
+  ItemMembershipTaskManager,
+  ItemTaskManager,
+  Task as MockTask,
+  TaskRunner,
+} from 'graasp-test';
 
 import build from './app';
 import { MEMBERS, MEMBERSHIPS, MOCK_ITEM } from './constants';
@@ -34,9 +39,7 @@ describe('Publish Plugin', () => {
       itemMembershipTaskManager.createGetOfItemTaskSequence = mockGetItemMembershipTask;
       const mockGetManyTask = jest.fn().mockReturnValue(new MockTask([MEMBERS.ANNA, MEMBERS.BOB]));
       memberTaskManager.createGetManyTask = mockGetManyTask;
-      jest
-        .spyOn(runner, 'runSingleSequence')
-        .mockImplementation(async (task) => task[0].result);
+      jest.spyOn(runner, 'runSingleSequence').mockImplementation(async (task) => task[0].result);
       jest.spyOn(runner, 'runSingle').mockImplementation(async (task) => task.result);
 
       it('Successfully publish item with notification', async () => {
@@ -47,7 +50,7 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-  
+
         const res = await app.inject({
           method: 'GET',
           url: `/${v4()}/publish?notification=true`,
@@ -67,7 +70,7 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-  
+
         const res = await app.inject({
           method: 'GET',
           url: `/${v4()}/publish`,
@@ -88,7 +91,7 @@ describe('Publish Plugin', () => {
           itemMembershipTaskManager,
           runner,
         });
-  
+
         const res = await app.inject({
           method: 'GET',
           url: '/invalid-id/publish',

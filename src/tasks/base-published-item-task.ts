@@ -1,12 +1,10 @@
-// global
 import { FastifyLoggerInstance } from 'fastify';
 
-import { Actor, DatabaseTransactionHandler, ItemService } from 'graasp';
-import { Task, TaskStatus } from 'graasp';
+import { Actor, DatabaseTransactionHandler, ItemService } from '@graasp/sdk';
+import { Task, TaskStatus } from '@graasp/sdk';
 import { ItemTagService } from 'graasp-item-tags';
 import { PublicItemService } from 'graasp-plugin-public';
 
-// local
 import { PublishedItemService } from '../db-service';
 
 export abstract class BasePublishedItemTask<R> implements Task<Actor, R> {
@@ -48,7 +46,7 @@ export abstract class BasePublishedItemTask<R> implements Task<Actor, R> {
     this.itemTagService = itemTagService;
     this.itemService = itemService;
     this.tagIds = tagIds;
-    this.status = 'NEW';
+    this.status = TaskStatus.NEW;
   }
 
   abstract get name(): string;

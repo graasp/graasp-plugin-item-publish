@@ -1,11 +1,11 @@
 import { FastifyPluginAsync } from 'fastify';
 
-import { Actor, IdParam, ItemMembership } from 'graasp';
+import { Actor, IdParam, ItemMembership } from '@graasp/sdk';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import mailerPlugin from 'graasp-mailer';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
-import { PermissionLevel } from './constants';
 
+import { PermissionLevel } from './constants';
 import { PublishedItemService } from './db-service';
 import schemas, { publishItem } from './schemas';
 import { TaskManager as PublishedItemTaskManager } from './task-manager';
@@ -86,8 +86,11 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
         // get co-editors
         const coEditorIds = itemMemberships
           .filter(
-            (membership) => membership.permission === PermissionLevel.Admin || membership.permission == PermissionLevel.Write,
-          ).map((membership) => membership.memberId);
+            (membership) =>
+              membership.permission === PermissionLevel.Admin ||
+              membership.permission == PermissionLevel.Write,
+          )
+          .map((membership) => membership.memberId);
         // send email notification to all co-editors
         const coEditors = await runner.runSingle(mTM.createGetManyTask(member, coEditorIds));
         coEditors.forEach(async (coEditor) => {

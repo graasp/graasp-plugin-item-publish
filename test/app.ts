@@ -6,9 +6,9 @@ import {
   ItemService,
   MemberTaskManager,
   TaskRunner,
-} from 'graasp';
+} from '@graasp/sdk';
+import 'graasp-mailer';
 import { ItemTaskManager } from 'graasp-test';
-import { } from 'graasp-mailer';
 
 import plugin, { GraaspPublishPluginOptions } from '../src/service-api';
 import { GRAASP_ACTOR } from './constants';
