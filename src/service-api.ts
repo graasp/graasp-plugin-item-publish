@@ -1,11 +1,10 @@
 import { FastifyPluginAsync } from 'fastify';
 
-import { Actor, IdParam, ItemMembership } from '@graasp/sdk';
+import { Actor, IdParam, ItemMembership, PermissionLevel } from '@graasp/sdk';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import mailerPlugin from 'graasp-mailer';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
 
-import { PermissionLevel } from './constants';
 import { PublishedItemService } from './db-service';
 import schemas, { publishItem } from './schemas';
 import { TaskManager as PublishedItemTaskManager } from './task-manager';

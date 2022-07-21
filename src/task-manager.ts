@@ -5,12 +5,12 @@ import {
   ItemService,
   ItemTaskManager,
   Member,
+  PermissionLevel,
   Task,
 } from '@graasp/sdk';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
 
-import { PermissionLevel } from './constants';
 import { PublishedItemService } from './db-service';
 import { PublishItemTask } from './tasks/publish-item-task';
 
