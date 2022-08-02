@@ -5,11 +5,11 @@ import {
   ItemService,
   ItemTaskManager,
   Member,
+  PermissionLevel,
   Task,
-} from 'graasp';
+} from '@graasp/sdk';
 import { ItemTagService, ItemTagTaskManager } from 'graasp-item-tags';
 import { PublicItemService, PublicItemTaskManager } from 'graasp-plugin-public';
-import { PermissionLevel } from './constants';
 
 import { PublishedItemService } from './db-service';
 import { PublishItemTask } from './tasks/publish-item-task';
@@ -54,7 +54,7 @@ export class TaskManager {
   }
 
   // todo: refactor this task depending on tag task sequence
-  createPublishItemTaskSequence(member: Member, item: Item): Task<Actor, any>[] {
+  createPublishItemTaskSequence(member: Member, item: Item): Task<Actor, unknown>[] {
     // get item from id and validate membership
     const validatePermissionTask =
       this.itemMembershipTaskManager.createGetMemberItemMembershipTask(member);

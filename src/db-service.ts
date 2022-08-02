@@ -1,5 +1,3 @@
-import { DatabaseTransactionConnection as TrxHandler, sql } from 'slonik';
-
 export class PublishedItemService {
   private publicTadId;
   private publishedTagId;

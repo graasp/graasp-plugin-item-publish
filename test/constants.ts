@@ -1,5 +1,4 @@
-import { Actor } from 'graasp';
-import { PermissionLevel } from '../src/constants';
+import { Actor, PermissionLevel } from '@graasp/sdk';
 
 export const GRAASP_ACTOR: Actor = {
   id: 'actorid',

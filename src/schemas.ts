@@ -79,8 +79,8 @@ export default {
 
 export const publishItem = {
   params: { $ref: 'http://graasp.org/#/definitions/idParam' },
-  queryString: { 
-    notification: { type: 'boolean'}
+  queryString: {
+    notification: { type: 'boolean' },
   },
   response: {
     200: { $ref: 'http://graasp.org/published-items/#/definitions/item' },
