@@ -1,3 +1,5 @@
+import { FastifyLoggerInstance } from 'fastify';
+
 import {
   Actor,
   Item,
@@ -27,6 +29,7 @@ export class TaskManager {
     publicTagId: string;
     publishedTagId: string;
   };
+  private log: FastifyLoggerInstance;
 
   constructor(
     publishedItemService: PublishedItemService,
@@ -41,6 +44,7 @@ export class TaskManager {
       publicTagId: string;
       publishedTagId: string;
     },
+    log: FastifyLoggerInstance,
   ) {
     this.itemService = itemService;
     this.itemTaskManager = itemTaskManager;
@@ -51,7 +55,10 @@ export class TaskManager {
     this.itemTagTaskManager = itemTagTaskManager;
     this.publicItemTaskManager = publicItemTaskManager;
     this.publicItemService = publicItemService;
+    this.log = log;
   }
+
+  getPublishItemTaskName = () => PublishItemTask.name;
 
   // todo: refactor this task depending on tag task sequence
   createPublishItemTaskSequence(member: Member, item: Item): Task<Actor, unknown>[] {
@@ -72,6 +79,7 @@ export class TaskManager {
       this.itemService,
       this.tagIds,
       { item },
+      this.log,
     );
 
     return [validatePermissionTask, publishTask];

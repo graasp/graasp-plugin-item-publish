@@ -1,7 +1,6 @@
 import { FastifyLoggerInstance } from 'fastify';
 
-import { Actor, DatabaseTransactionHandler, ItemService } from '@graasp/sdk';
-import { Task, TaskStatus } from '@graasp/sdk';
+import { Actor, DatabaseTransactionHandler, ItemService, Task, TaskStatus } from '@graasp/sdk';
 import { ItemTagService } from 'graasp-item-tags';
 import { PublicItemService } from 'graasp-plugin-public';
 
@@ -31,7 +30,6 @@ export abstract class BasePublishedItemTask<R> implements Task<Actor, R> {
   getResult: () => unknown;
 
   protected itemTagService: ItemTagService;
-
   constructor(
     actor: Actor,
     publishedItemService: PublishedItemService,

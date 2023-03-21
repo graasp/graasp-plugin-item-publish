@@ -1,4 +1,14 @@
-import { Actor, DatabaseTransactionHandler, Item, ItemService, TaskStatus } from '@graasp/sdk';
+import { FastifyLoggerInstance } from 'fastify';
+
+import {
+  Actor,
+  DatabaseTransactionHandler,
+  Item,
+  ItemService,
+  PostHookHandlerType,
+  PreHookHandlerType,
+  TaskStatus,
+} from '@graasp/sdk';
 import { ItemTag, ItemTagService } from 'graasp-item-tags';
 import { ItemNotPublic, PublicItemService } from 'graasp-plugin-public';
 
@@ -11,6 +21,10 @@ export type PublishItemTaskInputType = {
 export class PublishItemTask extends BasePublishedItemTask<ItemTag | ItemNotPublic> {
   input: PublishItemTaskInputType;
   getInput: () => PublishItemTaskInputType;
+  log?: FastifyLoggerInstance;
+
+  preHookHandler: PreHookHandlerType<Item>;
+  postHookHandler: PostHookHandlerType<Item>;
 
   get name(): string {
     return PublishItemTask.name;
@@ -27,9 +41,11 @@ export class PublishItemTask extends BasePublishedItemTask<ItemTag | ItemNotPubl
       publishedTagId: string;
     },
     input?: PublishItemTaskInputType,
+    log?: FastifyLoggerInstance,
   ) {
     super(actor, publishedItemService, publicItemService, itemTagService, itemService, tagIds);
     this.input = input;
+    this.log = log;
   }
 
   async run(handler: DatabaseTransactionHandler): Promise<void> {
@@ -44,12 +60,14 @@ export class PublishItemTask extends BasePublishedItemTask<ItemTag | ItemNotPubl
       throw new ItemNotPublic(item.id);
     }
 
-    const query = await this.itemTagService.create(
+    await this.preHookHandler?.(item, this.actor, { log: this.log, handler });
+    const itemTag = await this.itemTagService.create(
       { itemPath: item.path, creator: this.actor.id, tagId: this.tagIds.publishedTagId },
       handler,
     );
+    await this.postHookHandler?.(item, this.actor, { log: this.log, handler });
 
-    this._result = query;
+    this._result = itemTag;
     this.status = TaskStatus.OK;
   }
 }

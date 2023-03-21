@@ -29,6 +29,7 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
     taskRunner: runner,
     // cannot use public decoration because it is not defined in private endpoints
     mailer,
+    log,
   } = fastify;
   const { publicTagId, publishedTagId, hostname } = options;
 
@@ -51,7 +52,12 @@ const plugin: FastifyPluginAsync<GraaspPublishPluginOptions> = async (fastify, o
       publicTagId,
       publishedTagId,
     },
+    log,
   );
+
+  fastify.decorate('publish', {
+    taskManager: pITM,
+  });
 
   const sendNotificationEmail = ({ item, member, log }) => {
     const lang = member?.extra?.lang as string;
